@@ -14,7 +14,7 @@ class ActorManager:
 
     def create(self,
                first_name: str,
-               last_name:str
+               last_name: str
                ) -> None:
         self.cursor.execute(
             f"""INSERT INTO {self.table_name} (first_name, last_name)
@@ -28,15 +28,17 @@ class ActorManager:
         SELECT id, first_name, last_name
         FROM {self.table_name}""")
         rows = self.cursor.fetchall()
-        return [Actor(id=row[0], first_name=row[1], last_name=row[2]) for row in rows]
+        return [Actor(id=row[0],
+                      first_name=row[1],
+                      last_name=row[2]
+                      ) for row in rows]
 
     def update(self,
                pk: int,
                new_first_name: str,
                new_last_name: str
                ) -> None:
-        self.cursor.execute(f"""
-        UPDATE {self.table_name} 
+        self.cursor.execute(f"""UPDATE {self.table_name}
         SET first_name = ?, last_name = ?
         WHERE id = ?""", (new_first_name,
                           new_last_name, pk))
@@ -44,6 +46,6 @@ class ActorManager:
 
     def delete(self, pk: int) -> None:
         self.cursor.execute(f"""
-        DELETE FROM {self.table_name} 
+        DELETE FROM {self.table_name}
         WHERE id = ?""", (pk,))
         self.connection.commit()
